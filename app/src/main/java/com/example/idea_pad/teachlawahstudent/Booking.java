@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -38,6 +41,7 @@ public class Booking extends Fragment {
     TextView txtDetails;
 
     ArrayList<BookingData> classlist=new ArrayList<>();
+    List<BookingData> list = new ArrayList<>();
 
 
     public Booking() {
@@ -112,15 +116,19 @@ public class Booking extends Fragment {
 
     private void fetchData(DataSnapshot dataSnapshot)
     {
-        classlist.clear();
+
 
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
+            BookingData list = ds.getValue(BookingData.class);
+            classlist.add(list);
 
-            BookingData classlists=dataSnapshot.getValue(BookingData.class);
 
 
-            classlist.add(classlists);
+            //BookingData classlists=dataSnapshot.getValue(BookingData.class);
+
+
+            //classlist.add(classlists);
             //Toast.makeText()
             //String name = dataSnapshot.child("name").getValue(String.class);
             //txtDetails.setText(name);
