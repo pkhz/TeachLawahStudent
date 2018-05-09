@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="book_fragment">Booking form</string>
+    <string name="book_fragment">Bookings</string>
     <string name="lists_fragment">List of ustaz or ustazah</string>
     <string name="feedback_fragment">Give your feedback</string>
     <string name="noti_fragment">Notification</string>

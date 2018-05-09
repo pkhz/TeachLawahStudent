@@ -3,15 +3,41 @@ package com.example.idea_pad.teachlawahstudent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Booking extends Fragment {
+
+    DatabaseReference mFirebaseDatabase;
+    private String userId;
+
+    //DatabaseReference mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference(userID).child("makeclass");
+    //FirebaseHelper helper; get db
+    BookingAdapter adapter;
+    //private FirebaseRecyclerAdapter<YourClassListData, YourClassListViewHolder> adapter2;
+    RecyclerView rv;
+    //EditText nameEditTxt,propTxt,descTxt;
+    TextView txtDetails;
+
+    ArrayList<BookingData> classlist=new ArrayList<>();
 
 
     public Booking() {
@@ -22,8 +48,108 @@ public class Booking extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_booking, container, false);
+        View v = inflater.inflate(R.layout.fragment_booking, container, false);
+
+
+
+        //INITIALIZE FB
+        mFirebaseDatabase= FirebaseDatabase.getInstance().getReference();
+
+        //ADAPTER
+        adapter=new BookingAdapter(getActivity(),retrieve());
+
+        //String name = inputName.getText().toString();
+        //String venue = inputFeed.getText().toString();
+
+        //createListClasses(name, venue);
+
+        //INITIALIZE RV
+        rv= (RecyclerView) v.findViewById(R.id.rv);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        rv.setAdapter(adapter);
+
+        return v;
     }
+
+
+    public ArrayList<BookingData> retrieve()
+    {
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentFirebaseUser.getUid();
+        DatabaseReference mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference().child("user - students").child(userId).child("bookings");
+
+        mFirebaseDatabase2.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                fetchData(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                fetchData(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return classlist;
+    }
+
+    private void fetchData(DataSnapshot dataSnapshot)
+    {
+        classlist.clear();
+
+        for (DataSnapshot ds : dataSnapshot.getChildren())
+        {
+
+            BookingData classlists=dataSnapshot.getValue(BookingData.class);
+
+
+            classlist.add(classlists);
+            //Toast.makeText()
+            //String name = dataSnapshot.child("name").getValue(String.class);
+            //txtDetails.setText(name);
+            //Log.e(TAG, "Name: " + name);
+        }
+        String name = dataSnapshot.child("name").getValue(String.class);
+        String venue = dataSnapshot.child("venue").getValue(String.class);
+        String contact = dataSnapshot.child("contact").getValue(String.class);
+        String time = dataSnapshot.child("time").getValue(String.class);
+        String date = dataSnapshot.child("date").getValue(String.class);
+        //YourClassListData classlists=dataSnapshot.getValue(YourClassListData.class);
+        //txtDetails.setText(name);
+        //ListsData cd = dataSnapshot.getValue(ListsData.class);
+        //classlist.add(cd);
+
+
+        //Log.e(TAG, "Name: " + classlist.toString());
+
+
+
+        //createListClasses(name, venue, contact, time, date);
+
+
+
+        //txtDetails.setText(cd);
+
+
+    }
+
+
 
 }
