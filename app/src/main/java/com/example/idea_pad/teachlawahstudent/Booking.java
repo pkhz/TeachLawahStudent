@@ -120,7 +120,7 @@ public class Booking extends Fragment {
 
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-            BookingData list = ds.getValue(BookingData.class);
+            BookingData list = dataSnapshot.getValue(BookingData.class);
             classlist.add(list);
 
 
