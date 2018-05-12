@@ -1,6 +1,7 @@
 package com.example.idea_pad.teachlawahstudent;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsViewHolder>{
 
     Context c;
     ArrayList<ListsData> classlist;
+
+    //SwipeRefreshLayout swiper;
 
     public ListsAdapter(Context c, ArrayList<ListsData> classlist) {
         this.c = c;

@@ -61,7 +61,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingViewHolder> {
                 //String key = holder.getRef(position).getKey();
                 //String k;
 
-                mFirebaseDatabase.setValue(null); //delete all, how to delete all?
+                mFirebaseDatabase.setValue(null); //delete all, how to not delete all?
                 //mFirebaseDatabase.removeValue();
 
 

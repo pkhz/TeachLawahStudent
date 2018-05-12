@@ -3,8 +3,10 @@ package com.example.idea_pad.teachlawahstudent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /**
@@ -40,7 +43,7 @@ public class Lists extends Fragment {
 
     ArrayList<ListsData> classlist=new ArrayList<>();
 
-
+    //SwipeRefreshLayout swiper;
 
     public Lists() {
         // Required empty public constructor
@@ -52,7 +55,7 @@ public class Lists extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lists, container, false);
 
-
+        //swiper= (SwipeRefreshLayout) v.findViewById(R.id.swiper);
 
         //INITIALIZE FB
         mFirebaseDatabase= FirebaseDatabase.getInstance().getReference();
@@ -102,17 +105,20 @@ public class Lists extends Fragment {
     {
         //FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         //userId = currentFirebaseUser.getUid();
-        DatabaseReference mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference().child("listclasses");
+        //DatabaseReference mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference().child("listclasses");
+        DatabaseReference mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference("listclasses");
 
         mFirebaseDatabase2.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);
+                adapter.notifyDataSetChanged();
 
             }
 
@@ -137,20 +143,37 @@ public class Lists extends Fragment {
 
     private void fetchData(DataSnapshot dataSnapshot)
     {
-        classlist.clear();
+        //classlist.clear();
 
-        for (DataSnapshot ds : dataSnapshot.getChildren())
+        //add(child)
+         /*for (DataSnapshot ds : dataSnapshot.getChildren())
         {
+            //for(DataSnapshot ds2 : ds.getChildren()) { //second for
+                //String name = ds2.child("name").getValue(String.class);
+                //Log.d("TAG", name);
 
-            ListsData classlists=dataSnapshot.getValue(ListsData.class);
+
+                ListsData classlists=dataSnapshot.getValue(ListsData.class);
+
+            //Log.e(TAG, "Name:" )
 
 
-            classlist.add(classlists);
+                classlist.add(classlists);
+            //}
             //Toast.makeText()
             //String name = dataSnapshot.child("name").getValue(String.class);
             //txtDetails.setText(name);
             //Log.e(TAG, "Name: " + name);
-        }
+        }*/
+        String key = dataSnapshot.getKey();
+
+        ListsData classlists=dataSnapshot.getValue(ListsData.class);
+
+        //Log.e(TAG, "Name:" )
+
+
+        classlist.add(classlists);
+
         String name = dataSnapshot.child("name").getValue(String.class);
         String venue = dataSnapshot.child("venue").getValue(String.class);
         String contact = dataSnapshot.child("contact").getValue(String.class);
@@ -162,7 +185,7 @@ public class Lists extends Fragment {
         //classlist.add(cd);
 
 
-        //Log.e(TAG, "Name: " + classlist.toString());
+        Log.e("key"," Key: " + key);
 
 
 

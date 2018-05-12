@@ -46,7 +46,18 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
+
+        //default show on open - work but not work know what im  sayain
+        Lists l = new Lists();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                //.setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .replace(R.id.mains,
+                        l,
+                        l.getTag()
+                ).commit();
     }
 
     @Override
@@ -92,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
             int id = item.getItemId();
+            //MenuItem item2 = navigationView.getMenu().getIte
 
             //if user login
             //show profile nav

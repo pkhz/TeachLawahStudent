@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,7 +61,12 @@ public class Booking extends Fragment {
         mFirebaseDatabase= FirebaseDatabase.getInstance().getReference();
 
         //ADAPTER
-        adapter=new BookingAdapter(getActivity(),retrieve());
+        try {
+            adapter=new BookingAdapter(getActivity(),retrieve()); }
+        catch(Exception e){
+            Toast.makeText(getActivity(), "Sign in first!",
+                    Toast.LENGTH_LONG).show();
+        }
 
         //String name = inputName.getText().toString();
         //String venue = inputFeed.getText().toString();
@@ -87,12 +93,13 @@ public class Booking extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 fetchData(dataSnapshot);
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -118,7 +125,7 @@ public class Booking extends Fragment {
     {
 
 
-        for (DataSnapshot ds : dataSnapshot.getChildren())
+        /* for (DataSnapshot ds : dataSnapshot.getChildren())
         {
             BookingData list = dataSnapshot.getValue(BookingData.class);
             classlist.add(list);
@@ -133,7 +140,11 @@ public class Booking extends Fragment {
             //String name = dataSnapshot.child("name").getValue(String.class);
             //txtDetails.setText(name);
             //Log.e(TAG, "Name: " + name);
-        }
+        }*/
+
+        BookingData list = dataSnapshot.getValue(BookingData.class);
+        classlist.add(list);
+
         String name = dataSnapshot.child("name").getValue(String.class);
         String venue = dataSnapshot.child("venue").getValue(String.class);
         String contact = dataSnapshot.child("contact").getValue(String.class);

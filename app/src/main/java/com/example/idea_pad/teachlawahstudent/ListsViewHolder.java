@@ -9,10 +9,14 @@ import android.widget.TextView;
  * Created by Idea-Pad on 8/5/2018.
  */
 
+//implements refresh
 public class ListsViewHolder extends RecyclerView.ViewHolder{
 
     Button btnBook;
     TextView nameTxt,venueTxt,contactTxt, timeTxt, dateTxt;
+
+    //refrresh
+    //ItemClickListener itemClickListener;
 
     public ListsViewHolder(View itemView) {
         super(itemView);
@@ -24,6 +28,21 @@ public class ListsViewHolder extends RecyclerView.ViewHolder{
         dateTxt=(TextView) itemView.findViewById(R.id.dateTxt);
         btnBook=(Button) itemView.findViewById(R.id.btnBook);
 
+        //refresh
+        //itemView.setOnClickListener(this);
+
         //descTxt=(TextView) itemView.findViewById(R.id.descTxt);
     }
+
+
+    /*//refresh
+    public void setItemClickListener(ItemClickListener ic)
+    {
+        this.itemClickListener=ic;
+    }
+
+    @Override
+    public void onClick(View v) {
+        this.itemClickListener.onItemClick(getLayoutPosition());
+    }*/
 }
